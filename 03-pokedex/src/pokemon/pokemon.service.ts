@@ -9,7 +9,13 @@ export class PokemonService {
   }
 
   findAll() {
-    return `This action returns all pokemon`;
+    return {
+      pokemon: [
+        {
+          nombre: 'Pikachu',
+        },
+      ],
+    };
   }
 
   findOne(id: number) {
