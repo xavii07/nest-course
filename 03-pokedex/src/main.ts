@@ -18,6 +18,7 @@ async function bootstrap() {
   //TODO: Permite extender la ruta de la API
   app.setGlobalPrefix('api/v2');
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT);
+  console.log(`App is running on port ${process.env.PORT}`);
 }
 bootstrap();

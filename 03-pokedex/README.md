@@ -27,47 +27,35 @@
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
-
+1. Clonar Repositorio
+2. Ejecutar
 ```bash
-$ pnpm install
+  pnpm install
+```
+3. Tener Nest CLI instalado
+```bash
+  npm i -g @nestjs/cli
 ```
 
-## Running the app
-
+4. Levantar base de datos
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+  docker compose up -d
 ```
 
-## Test
+5. Clonar el archivo __.env.template__ y renombrar a __.env__
 
+6. Llenar las variables de entorno
+
+7. Ejecutar aplicacion
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+  pnpm run start:dev
 ```
 
-## Support
+8. Reconstruir base de datos con la semilla
+```bash
+  http://localhost:3000/api/v2/seed
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## Stack Usado
+- MongoDB
+- Nest JS
