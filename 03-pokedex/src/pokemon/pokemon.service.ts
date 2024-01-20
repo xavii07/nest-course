@@ -30,14 +30,9 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return {
-      pokemon: [
-        {
-          nombre: 'Pikachu',
-        },
-      ],
-    };
+  async findAll() {
+    const pokemons = await this.pokemonModel.find().exec();
+    return pokemons;
   }
 
   async findOne(term: string) {
