@@ -9,6 +9,10 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
+      transform: true, //TODO: Transformar dtos -> consumo de memoria
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
   //TODO: Permite extender la ruta de la API
