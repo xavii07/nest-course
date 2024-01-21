@@ -8,4 +8,6 @@ services:
     environment:
       MONGO_DATABASE: nest-pokemon
     volumes:
-      - ./mongo:/data/db
+      - mongo-data: /data/db
+volumes:
+  mongo-data:

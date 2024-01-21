@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  pokedexapp:
+    depends_on:
+      - db
+    build:
+      context: . # carpeta donde esta el dockerfile
+      dockerfile: Dockerfile # nombre del archivo dockerfile
+    image: pokedex-docker # nombre de la imagen que se va a crear
+    container_name: pokedexapp # nombre del contenedor que se va a crear
+    restart: always # reinicia el contenedor si se cae
+    ports:
+      - '${PORT}:${PORT}' # puerto donde se va a ejecutar la app de el archivo .env
+    #workdir_dir: /var/www/pokedex # directorio donde se va a ejecutar la app
+    environment:
+      MONGODB: ${MONGODB} # variable de entorno de la base de datos
+      PORT: ${PORT} # variable de entorno del puerto
+      DEFAULT_LIMIT: ${DEFAULT_LIMIT} # variable de entorno del limite de la paginacion
+      #volumes:
+      #- ./:/var/www/pokedex # volumen donde se va a ejecutar la app
+
+  db:
+    image: mongo:5
+    container_name: mongo-poke # nombre del contenedor que se va a crear como dns de base de datos este se coloca en la conexion de la app
+    restart: always
+    ports:
+      - 27018:27017
+    environment:
+      MONGODB_DATABASE: nest-pokemon
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:

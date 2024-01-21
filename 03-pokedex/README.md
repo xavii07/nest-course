@@ -59,3 +59,11 @@
 ## Stack Usado
 - MongoDB
 - Nest JS
+
+# Production build
+1. Crear archivo `.env.prod`
+2. Llenar las variables de entorno de produccion
+3. Construir la imagen
+```bash
+  docker compose -f docker-compose.prod.yaml --env-file .env.prod up --build
+```
