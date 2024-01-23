@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 
 @Entity()
 export class Product {
@@ -39,6 +45,12 @@ export class Product {
   @Column('text')
   gender: string;
 
+  @Column('text', {
+    array: true,
+    default: [],
+  })
+  tags: string[];
+
   //Todo: agregar un procedimiento para que el slug se genere automaticamente antes de insertar el producto
   @BeforeInsert()
   checkSlugInsert() {
@@ -46,6 +58,14 @@ export class Product {
       this.slug = this.title;
     }
 
+    this.slug = this.slug
+      .toLocaleLowerCase()
+      .replaceAll(' ', '_')
+      .replaceAll("'", '');
+  }
+
+  @BeforeUpdate()
+  checkSlugUpdate() {
     this.slug = this.slug
       .toLocaleLowerCase()
       .replaceAll(' ', '_')
