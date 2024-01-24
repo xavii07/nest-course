@@ -9,7 +9,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { validate as isUUID } from 'uuid';
 import { ProductImage } from './entities/product-image.entity';
@@ -24,6 +24,7 @@ export class ProductsService {
 
     @InjectRepository(ProductImage)
     private readonly productImageRepository: Repository<ProductImage>,
+    private readonly dataSource: DataSource, //Todo: para saber cadena de conexion usuario, configuraion db
   ) {}
 
   async create(createProductDto: CreateProductDto) {
@@ -96,17 +97,35 @@ export class ProductsService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
-    const product = await this.productRepository.preload({
-      id: id,
-      ...updateProductDto,
-      images: [],
-    });
-    try {
-      if (!product) throw new NotFoundException('Product not found ' + id);
-      await this.productRepository.save(product);
+    const { images = [], ...toUpdate } = updateProductDto;
 
-      return product;
+    const product = await this.productRepository.preload({ id, ...toUpdate });
+    if (!product) throw new NotFoundException('Product not found ' + id);
+
+    //todo: creat0e query runner
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect(); // conectar a db
+    await queryRunner.startTransaction();
+
+    try {
+      if (images) {
+        await queryRunner.manager.delete(ProductImage, { product: { id } }); //modelo a eliminar tabla, crieterio
+
+        product.images = images.map((image) =>
+          this.productImageRepository.create({ url: image }),
+        );
+      }
+
+      await queryRunner.manager.save(product);
+
+      //await this.productRepository.save(product);
+      await queryRunner.commitTransaction(); //hacer el commit
+      await queryRunner.release(); //dejar de funcionar
+      return this.findOneClean(id);
     } catch (error) {
+      await queryRunner.rollbackTransaction();
+      await queryRunner.release(); //dejar de funcionar
+
       this.handleExeptions(error);
     }
   }
