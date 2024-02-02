@@ -10,7 +10,9 @@ export class User {
   })
   email: string;
 
-  @Column('text')
+  @Column('text', {
+    select: false, // todo: remove password from the response
+  })
   password: string;
 
   @Column('text')
