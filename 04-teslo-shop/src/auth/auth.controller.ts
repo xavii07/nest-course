@@ -42,7 +42,7 @@ export class AuthController {
   }
 
   @Get('private2')
-  @SetMetadata('roles', ['admin', 'super-user']) //? para agregar metadata a la ruta o controlador
+  @SetMetadata('roles', ['admin', 'super-user']) //? para agregar metadata a la ruta o controlador se usa muy poco pero es util
   @UseGuards(AuthGuard(), UserRoleGuard)
   privateRoute2(@Req() request: Express.Request) {
     return {
