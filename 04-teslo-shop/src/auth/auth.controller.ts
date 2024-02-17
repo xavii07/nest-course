@@ -9,6 +9,7 @@ import { User } from './entities/user.entity';
 import { UserRoleGuard } from './guards/user-role.guard';
 import { RoleProtected } from './decorators/role-protected.decorator';
 import { ValidRoles } from './interfaces/valid-roles';
+import { Auth } from './decorators/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -51,6 +52,17 @@ export class AuthController {
     return {
       ok: true,
       message: 'Hello world private 2',
+      user: request.user,
+    };
+  }
+
+  //Agrupar decoradores para hacer mas legible el codigo
+  @Get('private3')
+  @Auth(ValidRoles.admin, ValidRoles.superUser) //? agrupa los decoradores RoleProtected y UseGuards
+  privateRoute3(@Req() request: Express.Request) {
+    return {
+      ok: true,
+      message: 'Hello world private 3',
       user: request.user,
     };
   }
