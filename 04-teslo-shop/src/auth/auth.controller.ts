@@ -7,6 +7,8 @@ import { GetUser } from './decorators/get-user.decorator';
 import { RawHeaders } from './decorators/raw-headers.decorator';
 import { User } from './entities/user.entity';
 import { UserRoleGuard } from './guards/user-role.guard';
+import { RoleProtected } from './decorators/role-protected.decorator';
+import { ValidRoles } from './interfaces/valid-roles';
 
 @Controller('auth')
 export class AuthController {
@@ -42,7 +44,8 @@ export class AuthController {
   }
 
   @Get('private2')
-  @SetMetadata('roles', ['admin', 'super-user']) //? para agregar metadata a la ruta o controlador se usa muy poco pero es util
+  //@SetMetadata('roles', ['admin', 'super-user']) //? para agregar metadata a la ruta o controlador se usa muy poco pero es util
+  @RoleProtected(ValidRoles.superUser, ValidRoles.user)
   @UseGuards(AuthGuard(), UserRoleGuard)
   privateRoute2(@Req() request: Express.Request) {
     return {
