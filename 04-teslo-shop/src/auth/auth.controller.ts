@@ -25,6 +25,14 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
+  @Get('check-auth-status')
+  @Auth()
+  checkAuthStatus(
+    @GetUser() user: User, //? para obtener usuario de req: @Req() request: Express.Request
+  ) {
+    return this.authService.checkAuthStatus(user);
+  }
+
   @Get('private')
   @UseGuards(AuthGuard())
   testingPrivateRoute(
