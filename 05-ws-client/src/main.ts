@@ -5,6 +5,9 @@ import './style.css'
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
    <h1>Websocket - Client</h1>
+   <input type="text" placeholder="Json Web Token" id="json-token"/>
+   <button id="btn-token">Connect</button>
+   <br >
    <span id="server-status">offline</span>
    <ul id="clients-ul"></ul>
    <form id="message-form">
@@ -14,5 +17,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
    <ul id='messages-ul'></ul>
   </div>
 `
-connectToServer()
+
+const btnToken = document.querySelector<HTMLButtonElement>('#btn-token')!
+const inputToken = document.querySelector<HTMLInputElement>('#json-token')!
+
+btnToken.addEventListener('click', () => {
+    if(inputToken.value.trim() === '') return alert('Ingresa un token valido')
+
+    connectToServer(inputToken.value.trim())
+})
 

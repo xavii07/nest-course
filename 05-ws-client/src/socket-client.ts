@@ -1,7 +1,12 @@
 import { Manager, Socket } from 'socket.io-client'
 
-export const connectToServer = () => {
-    const manager = new Manager('http://localhost:3000/socket.io/socket.io.js')
+export const connectToServer = (token: string) => {
+    const manager = new Manager('http://localhost:3000/socket.io/socket.io.js', {
+        extraHeaders: { //Todo: Enviar el token en el header de la peticion hacia el servidor
+            hola: 'mundo',
+            authorization: token
+        }
+    })
 
     const socket = manager.socket('/')
     addListeners(socket)
